@@ -1,17 +1,12 @@
-package 贪吃蛇;
+package shao;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
-
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.Timer;
 
 public class SnackPanel extends JPanel implements KeyListener,ActionListener
 {
@@ -22,21 +17,21 @@ public class SnackPanel extends JPanel implements KeyListener,ActionListener
 	ImageIcon left=new ImageIcon("left.jpg");
 	ImageIcon right=new ImageIcon("right.jpg");
 	ImageIcon food=new ImageIcon("food.jpg");
-	
+
 	int[] snakex=new int[750];
 	int[] snakey=new int[750];
 	Random random=new Random();
 	int foodx=random.nextInt(34)*25+25;
 	int foody=random.nextInt(24)*25+75;
-	
+
 	int len=3;
 	char direction='R';
-	
+
 	boolean isStarted=false;
 	boolean isFailed=false;
-	
+
 	Timer timer=new Timer(100,this);
-	
+
 	public SnackPanel(){
 		this.setFocusable(true);
 		this.addKeyListener(this);
@@ -107,88 +102,85 @@ public class SnackPanel extends JPanel implements KeyListener,ActionListener
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO 自动生成的方法存根
 		int keyCode=e.getKeyCode();
 		switch(keyCode)
 		{
 		case KeyEvent.VK_SPACE:
 			if (isFailed) {
 				setUp();
-			}else {
-			isStarted=!isStarted;
+			} else {
+				isStarted = !isStarted;
 			}
 			break;
-		case KeyEvent.VK_UP:
-			if(direction!='D'&&isStarted)
-			direction='U';
-			break;
-		case KeyEvent.VK_DOWN:
-			if(direction!='U'&&isStarted)
-			direction='D';
-			break;
-		case KeyEvent.VK_LEFT:
-			if(direction!='R'&&isStarted)
-			direction='L';
-			break;
-		case KeyEvent.VK_RIGHT:
-			if(direction!='L'&&isStarted)
-			direction='R';
-			break;
+			case KeyEvent.VK_UP:
+				if (direction != 'D' && isStarted)
+					direction = 'U';
+				break;
+			case KeyEvent.VK_DOWN:
+				if (direction != 'U' && isStarted)
+					direction = 'D';
+				break;
+			case KeyEvent.VK_LEFT:
+				if (direction != 'R' && isStarted)
+					direction = 'L';
+				break;
+			case KeyEvent.VK_RIGHT:
+				if (direction != 'L' && isStarted)
+					direction = 'R';
+				break;
 		}
 	}
+
 	//时间监控器
 	@Override
-	public void actionPerformed(ActionEvent e) 
-	{
-		if(isStarted&&!isFailed)
-		{
+	public void actionPerformed(ActionEvent e) {
+		if (isStarted && !isFailed) {
 			//再定一个闹钟
 			timer.start();
 			//移动数据
 			//移动蛇的身体
- 			for(int i=len;i>0;i--){
-				snakex[i]=snakex[i-1];
- 				snakey[i]=snakey[i-1];
- 			}
- 			//移动蛇头
- 			switch(direction)
- 			{
- 			case 'U':
- 				snakey[0]-=25;
- 				if (snakey[0]<75) {
-					snakey[0]=650;
-				}
- 				break;
- 			case 'D':
- 				snakey[0]+=25;
- 				if (snakey[0]>650) {
-					snakey[0]=75;
-				}
- 				break;
- 			case 'L':
- 				snakex[0]-=25;
- 				if (snakex[0]<25) {
-					snakex[0]=850;
+			for (int i = len; i > 0; i--) {
+				snakex[i] = snakex[i - 1];
+				snakey[i] = snakey[i - 1];
+			}
+			//移动蛇头
+			switch (direction) {
+				case 'U':
+					snakey[0] -= 25;
+					if (snakey[0] < 75) {
+						snakey[0] = 650;
+					}
+					break;
+				case 'D':
+					snakey[0] += 25;
+					if (snakey[0] > 650) {
+						snakey[0] = 75;
+					}
+					break;
+				case 'L':
+					snakex[0] -= 25;
+					if (snakex[0] < 25) {
+						snakex[0] = 850;
 				}
  				break;
  			case 'R':
  				snakex[0]+=25;
- 				if (snakex[0]>850) {
-					snakex[0]=25;
+				if (snakex[0] > 850) {
+					snakex[0] = 25;
 				}
- 				break;
- 			}
- 			if (snakex[0]==foodx&&snakey[0]==foody) {
-				len++;
-				foodx=random.nextInt(34)*25+25;
-				foody=random.nextInt(24)*25+75;
+				break;
 			}
- 			for(int i=1;i<len;i++)
- 			{
- 				if (snakex[i]==snakex[0]&&snakey[i]==snakey[0]) {
-					isFailed=true;
+			if (snakex[0] == foodx && snakey[0] == foody) {
+				len++;
+				foodx = random.nextInt(34) * 25 + 25;
+				foody = random.nextInt(24) * 25 + 75;
+			}
+			for (int i = 1; i < len; i++) {
+				if (snakex[i] == snakex[0] && snakey[i] == snakey[0]) {
+					isFailed = true;
+					break;
 				}
- 			}
+			}
 		}
 		repaint();
 	}
